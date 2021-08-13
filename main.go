@@ -13,7 +13,7 @@ func main()  {
 	region := "cn_gf01"
 
 	infoUrl := fmt.Sprintf("https://api-takumi.mihoyo.com/event/bbs_sign_reward/info?region=%v&act_id=%v&uid=%v", region, actID, uid)
-	signUrl := "https://api-takumi.mihoyo.com/event/bbs_sign_reward/sign"
+	// signUrl := "https://api-takumi.mihoyo.com/event/bbs_sign_reward/sign"
 
 	fmt.Println(infoUrl)
 	fmt.Println(appVer)
