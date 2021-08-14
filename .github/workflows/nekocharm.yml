@@ -13,13 +13,13 @@ env:
   
 jobs:
   ba_ra_ra:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-go@v2.1.3
         with:
           go-version: '^1.13.1'
       - run:  go version
-      - run:  go run main.go ${{ secrets.APPVER }} ${{ secrets.UID }} ${{ secrets.COOKIE }}
+      - run:  go run main.go '${{ secrets.APPVER }}' '${{ secrets.UID }}' '${{ secrets.COOKIE }}'
         env:
           GO111MODULE: "on"
