@@ -23,4 +23,4 @@ jobs:
       - run:  go get -v -u github.com/gofrs/uuid
       - run:  ls /opt/hostedtoolcache/go/1.16.7/x64/src
 #       - run:  go run main.go ${{ secrets.APPVER }} ${{ secrets.UID }} ${{ secrets.COOKIE }}
-      - run:  find / -name "uuid.go"
+      - run:  find /opt/hostedtoolcache/go/1.16.7/x64 -name "uuid.go"
