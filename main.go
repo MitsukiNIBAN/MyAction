@@ -18,7 +18,7 @@ import (
 
 var actID string = "e202009291139501"
 var region string = "cn_gf01"
-var appVer string
+var appVer string = "2.3.0"
 var uid string
 var cookie string
 var userAgent string
@@ -67,13 +67,14 @@ func AttachReqInfo(request *http.Request) {
 	request.Header.Set("Cookie", cookie)
 
 	iiid := uuid.NewV3(uuid.NamespaceURL, cookie)
-	request.Header.Set("x-rpc-device_id", strings.ToUpper(strings.Replace(iiid.String(), "-", "", -1)))
-	request.Header.Set("x-rpc-client_type", "5")
-	request.Header.Set("x-rpc-app_version", appVer)
+	request.Header["x-rpc-device_id"] = []string{strings.ToUpper(strings.Replace(iiid.String(), "-", "", -1))}
+	request.Header["x-rpc-client_type"] = []string{"5"}
+	request.Header["x-rpc-app_version"] = []string{appVer}
+
 	t := time.Now().Unix()
 	c := RandomCode()
 	m := fmt.Sprintf("%x", md5.Sum([]byte(fmt.Sprintf("salt=h8w582wxwgqvahcdkpvdhbh2w9casgfl&t=%v&r=%v", t, c))))
-	request.Header.Set("DS", fmt.Sprintf("%v,%v,%v", t, c, m))
+	request.Header["DS"] = []string{fmt.Sprintf("%v,%v,%v", t, c, m)}
 }
 
 func GetInfo(info *Info) error {
@@ -85,6 +86,7 @@ func GetInfo(info *Info) error {
 		return err
 	}
 	defer infoResp.Body.Close()
+
 	respByte, _ := ioutil.ReadAll(infoResp.Body)
 
 	var result Result
@@ -120,28 +122,28 @@ func TrySign() error {
 	if result.Code != 0 {
 		return errors.New(result.Msg)
 	}
-
-	fmt.Println(string(respByte))
 	return nil
 }
 
 func main() {
-	appVer = os.Args[1]
-	uid = os.Args[2]
-	cookie = os.Args[3]
+	uid = os.Args[1]
+	cookie = os.Args[2]
 
 	userAgent = fmt.Sprintf("Mozilla/5.0 (iPhone; CPU iPhone OS 14_0_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) miHoYoBBS/%v", appVer)
 	referer = fmt.Sprintf("https://webstatic.mihoyo.com/bbs/event/signin-ys/index.html?bbs_auth_required=%v&act_id=%v&utm_source=%v&utm_medium=%v&utm_campaign=%v",
 		"true", actID, "bbs", "mys", "icon")
 
 	var info Info
-
 	if err := GetInfo(&info); err != nil {
-		fmt.Println(err)
+		fmt.Println("信息获取失败:" + err.Error())
 	}
 
 	if !info.IsSign {
-		TrySign()
+		if err := TrySign(); err != nil {
+			fmt.Println("签到失败:" + err.Error())
+		} else {
+			fmt.Println("签到成功")
+		}
 	} else {
 		fmt.Println("已签到")
 	}

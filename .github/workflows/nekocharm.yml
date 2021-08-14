@@ -1,8 +1,8 @@
 name: Sign
 
 on:
-  # schedule:
-  #   - cron: "0 22 * * *"
+  schedule:
+    - cron: "0 22 * * *"
   workflow_dispatch:
   
 env:
@@ -20,6 +20,6 @@ jobs:
         with:
           go-version: '^1.13.1'
       - run:  go version
-      - run:  go run main.go '${{ secrets.APPVER }}' '${{ secrets.UID }}' '${{ secrets.COOKIE }}'
+      - run:  go run main.go '${{ secrets.UID }}' '${{ secrets.COOKIE }}'
         env:
           GO111MODULE: "on"
