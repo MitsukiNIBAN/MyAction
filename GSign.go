@@ -133,18 +133,29 @@ func main() {
 	referer = fmt.Sprintf("https://webstatic.mihoyo.com/bbs/event/signin-ys/index.html?bbs_auth_required=%v&act_id=%v&utm_source=%v&utm_medium=%v&utm_campaign=%v",
 		"true", actID, "bbs", "mys", "icon")
 
+	var buffer bytes.Buffer
 	var info Info
 	if err := GetInfo(&info); err != nil {
-		fmt.Println("信息获取失败:" + err.Error())
+		buffer.WriteString("签到信息获取失败：" + err.Error() + "\n")
 	}
+	buffer.WriteString(info.Today + "\n")
 
 	if !info.IsSign {
 		if err := TrySign(); err != nil {
-			fmt.Println("签到失败:" + err.Error())
+			buffer.WriteString(fmt.Sprintf("累计签到：%d天\n", info.TotalSignDay))
+			fmt.Println("今日签到失败:" + err.Error())
 		} else {
-			fmt.Println("签到成功")
+			buffer.WriteString(fmt.Sprintf("累计签到：%d天\n", info.TotalSignDay+1))
+			buffer.WriteString("今日已签到")
 		}
 	} else {
-		fmt.Println("已签到")
+		buffer.WriteString(fmt.Sprintf("累计签到：%d天\n", info.TotalSignDay))
+		buffer.WriteString("今日已签到")
 	}
+
+	corpid := os.Args[3]
+	appsecret := os.Args[4]
+	agentid := os.Args[5]
+
+	PushMsg(buffer.String(), corpid, appsecret, agentid)
 }

@@ -20,6 +20,6 @@ jobs:
         with:
           go-version: '^1.13.1'
       - run:  go version
-      - run:  go run main.go '${{ secrets.UID }}' '${{ secrets.COOKIE }}'
+      - run:  go run GSign.go '${{ secrets.UID }}' '${{ secrets.COOKIE }}' '${{ secrets.CORPID }}' '${{ secrets.APPSECRET }}' '${{ secrets.AGENTID }}' 
         env:
           GO111MODULE: "on"
