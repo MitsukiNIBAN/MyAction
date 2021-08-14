@@ -1,6 +1,8 @@
 name: Sign
 
 on:
+  # schedule:
+  #   - cron: "0 22 * * *"
   workflow_dispatch:
   
 env:
@@ -17,5 +19,5 @@ jobs:
       - uses: actions/setup-go@v2.1.3
         with:
           go-version: '^1.13.1'
-      - run: go version
+      - run: go get github.com/gofrs/uuid
       - run: go run main.go ${{ secrets.APPVER }} ${{ secrets.UID }} ${{ secrets.COOKIE }}
