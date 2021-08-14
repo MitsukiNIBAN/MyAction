@@ -16,9 +16,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: ibrt/golang-github-action@v1
+      - uses: actions/setup-go@v2.1.3
         with:
-          go-version: 1.16
-          go-packages: |
-            github.com/gofrs/uuid
+          go-version: '^1.13.1'
+      - run:  go get -v -u github.com/gofrs/uuid
       - run:  go run main.go ${{ secrets.APPVER }} ${{ secrets.UID }} ${{ secrets.COOKIE }}
