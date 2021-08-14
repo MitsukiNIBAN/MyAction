@@ -12,7 +12,7 @@ env:
   TZ: 'Asia/Shanghai'
   
 jobs:
-  ba_ra_ra:
+  Babara:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
