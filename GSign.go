@@ -1,6 +1,7 @@
 package main
 
 import (
+	"Sign/WPush"
 	"bytes"
 	"crypto/md5"
 	"encoding/json"
@@ -157,5 +158,5 @@ func main() {
 	appsecret := os.Args[4]
 	agentid := os.Args[5]
 
-	PushMsg(buffer.String(), corpid, appsecret, agentid)
+	WPush.PushMsg(buffer.String(), corpid, appsecret, agentid)
 }

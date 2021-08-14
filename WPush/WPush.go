@@ -1,4 +1,4 @@
-package main
+package WPush
 
 import (
 	"bytes"
@@ -84,6 +84,8 @@ func PushMsg(msg string, corpid string, appsecret string, agentid string) {
 	if err != nil {
 		panic(err)
 	}
+
+	fmt.Println(result)
 	if IsZero(result["errcode"]) {
 		fmt.Println("推送成功")
 	} else {
